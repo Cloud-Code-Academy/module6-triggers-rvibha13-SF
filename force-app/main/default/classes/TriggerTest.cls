@@ -45,13 +45,13 @@ public with sharing class TriggerTest {
         }
         
         // Perform the test
-        Test.startTest();
+        System.Test.startTest();
         Database.DMLOptions dml = new Database.DMLOptions(); 
         dml.DuplicateRuleHeader.allowSave = true;
         dml.DuplicateRuleHeader.runAsCurrentUser = true;
         Database.insert(accountTypeProspect, dml);
         Database.insert(accountTypeNotChange, dml);
-        Test.stopTest();
+        System.Test.stopTest();
         
         // Retrieve the accounts again
         List<Account> prospectAccounts = [SELECT Id, Type FROM Account WHERE Type = 'Prospect'];
@@ -102,9 +102,9 @@ public with sharing class TriggerTest {
         }
 
         // Perform the test
-        Test.startTest();
+        System.Test.startTest();
         insert accountsToInsert;
-        Test.stopTest();
+        System.Test.stopTest();
 
         // Retrieve the accounts again
         List<Account> insertedAccounts = [SELECT Id, 
@@ -168,13 +168,13 @@ public with sharing class TriggerTest {
         }
 
         // Perform the test
-        Test.startTest();
+        System.Test.startTest();
         Database.DMLOptions dml = new Database.DMLOptions(); 
         dml.DuplicateRuleHeader.allowSave = true;
         dml.DuplicateRuleHeader.runAsCurrentUser = true;
         Database.insert(accountsToInsert, dml);
         Database.insert(accountsNotHot, dml);
-        Test.stopTest();
+        System.Test.stopTest();
 
         // Retrieve the accounts again
         List<Account> insertedAccounts = [SELECT Id, Rating FROM Account WHERE Id IN :accountsToInsert];
@@ -218,12 +218,12 @@ public with sharing class TriggerTest {
         }
 
         // Perform the test
-        Test.startTest();
+        System.Test.startTest();
         Database.DMLOptions dml = new Database.DMLOptions(); 
         dml.DuplicateRuleHeader.allowSave = true;
         dml.DuplicateRuleHeader.runAsCurrentUser = true;
         Database.insert(accountsToInsert, dml);
-        Test.stopTest();
+        System.Test.stopTest();
 
         // Retrieve the newly created Contacts
         List<Contact> contacts = [SELECT Id, LastName, Email, AccountId FROM Contact WHERE AccountId IN :accountsToInsert];
@@ -286,7 +286,7 @@ public with sharing class TriggerTest {
         }
 
         // Perform the test and assert that an error is thrown
-        Test.startTest();
+        System.Test.startTest();
         try {
             update opportunitiesToInsert;
             System.assert(false, 'Expected an exception but did not get one.');
@@ -300,7 +300,7 @@ public with sharing class TriggerTest {
         for (Opportunity opp : oppsNotTriggerValidationUpdated) {
             System.assertEquals(8000, opp.Amount, 'Opportunity Amount is incorrect.');
         }
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
 	/*
@@ -330,14 +330,14 @@ public with sharing class TriggerTest {
         insert opportunitiesToInsert;
 
         // Try to delete the opportunities
-        Test.startTest();
+        System.Test.startTest();
         try {
             delete opportunitiesToInsert;
             System.assert(false, 'Expected an exception but did not get one.');
         } catch (DmlException e) {
             System.assert(e.getMessage().contains('Cannot delete closed opportunity for a banking account that is won'), 'The error message is not as expected.');
         }
-        Test.stopTest();
+        System.Test.stopTest();
     }
 
     /*
@@ -388,7 +388,7 @@ public with sharing class TriggerTest {
         }
 
         // Update the opportunities
-        Test.startTest();
+        System.Test.startTest();
 
         insert contactsToInsert;
         insert opportunitiesToInsert;
@@ -397,7 +397,7 @@ public with sharing class TriggerTest {
             opp.Primary_Contact__c = null;
         }
         update opportunitiesToInsert;
-        Test.stopTest();
+        System.Test.stopTest();
 
         // Check that the primary contact is set correctly
         List<Opportunity> updatedOpportunities = [SELECT Primary_Contact__c, Primary_Contact__r.FirstName, Primary_Contact__r.Title FROM Opportunity WHERE Id IN :opportunitiesToInsert];
